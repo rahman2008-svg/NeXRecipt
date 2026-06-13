@@ -1,45 +1,53 @@
 workflows:
-android-native:
-name: NexReceipt Pro Native Build
-max_build_duration: 60
+  android-native:
+    name: NexReceipt Pro Native Build
+    max_build_duration: 60
 
-instance_type: linux_x2
+    instance_type: mac_mini_m2
 
-environment:
-  groups:
-    - keystore_vars
+    environment:
+      groups:
+        - keystore_vars
 
-  vars:
-    PACKAGE_NAME: "com.aistudio.nexreceipt.pro"
+      vars:
+        PACKAGE_NAME: "com.aistudio.nexreceipt.pro"
 
-  java: 17
+      java: 17
 
-triggering:
-  events:
-    - push
-    - pull_request
+    triggering:
+      events:
+        - push
+        - pull_request
 
-  branch_patterns:
-    - pattern: "main"
-    - pattern: "master"
+      branch_patterns:
+        - pattern: "main"
+          include: true
+        - pattern: "master"
+          include: true
 
-cache:
-  cache_paths:
-    - ~/.gradle/caches
-    - ~/.gradle/wrapper
+    cache:
+      cache_paths:
+        - ~/.gradle/caches
+        - ~/.gradle/wrapper
 
-scripts:
-  - name: Set up local.properties
-    script: |
-      echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+    scripts:
+      - name: Set up local.properties
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-  - name: Grant Execute Permission
-    script: |
-      chmod +x gradlew
+      - name: Grant execute permission
+        script: |
+          chmod +x gradlew
 
-  - name: Build Debug APK
-    script: |
-      ./gradlew clean assembleDebug --stacktrace
+      - name: Clean project
+        script: |
+          ./gradlew clean
 
-artifacts:
-  - app/build/outputs/apk/debug/*.apk
+      - name: Build Debug APK
+        script: |
+          ./gradlew assembleDebug --stacktrace
+
+    artifacts:
+      - app/build/outputs/apk/debug/*.apk
+      - app/build/outputs/**/*.aab
+      - app/build/reports/**/*
