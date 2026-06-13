@@ -1,11 +1,14 @@
 plugins {
     alias(libs.plugins.android.application)
+
+    // Kotlin plugins
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 
-    // ✅ KSP must be AFTER kotlin plugins (important for CI stability)
+    // KSP (must be after Kotlin plugins)
     alias(libs.plugins.google.devtools.ksp)
 
+    // Optional tools
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.secrets)
 }
@@ -26,7 +29,8 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
+            val keystorePath = System.getenv("KEYSTORE_PATH")
+                ?: "${rootDir}/my-upload-key.jks"
 
             storeFile = file(keystorePath)
             storePassword = System.getenv("STORE_PASSWORD")
@@ -49,8 +53,9 @@ android {
         }
 
         debug {
-            // Debug build - no signing required for local development
-            signingConfig = null
+            // default debug config
+            isMinifyEnabled = false
+            signingConfig = null  // ✅ Debug-এ signing বন্ধ রাখা হয়েছে
         }
     }
 
@@ -75,6 +80,9 @@ android {
     }
 }
 
+/**
+ * Secrets plugin config (CI-safe)
+ */
 secrets {
     propertiesFileName = ".env"
     defaultPropertiesFileName = ".env.example"
@@ -104,7 +112,7 @@ dependencies {
     // Navigation
     implementation(libs.androidx.navigation.compose)
 
-    // KotlinX
+    // KotlinX Serialization
     implementation(libs.kotlinx.serialization.json)
 
     // Room Database
@@ -112,19 +120,19 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // Coil for image loading
+    // Coil
     implementation(libs.coil.compose)
 
     // Permissions
     implementation(libs.accompanist.permissions)
 
-    // Camera (if needed)
+    // Camera
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.core)
 
-    // Retrofit + Networking
+    // Networking
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
     implementation(libs.okhttp)
@@ -141,7 +149,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ai)
 
-    // Test dependencies
+    // Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -150,7 +158,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // Robolectric + Roborazzi (Screenshot testing)
+    // Roborazzi (Screenshot Testing)
     testImplementation(libs.robolectric)
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
