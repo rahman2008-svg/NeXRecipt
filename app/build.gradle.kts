@@ -1,11 +1,14 @@
 plugins {
     alias(libs.plugins.android.application)
+
+    // Kotlin plugins
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 
-    // ✅ KSP must be AFTER kotlin plugins (important for CI stability)
+    // KSP (must be after Kotlin plugins)
     alias(libs.plugins.google.devtools.ksp)
 
+    // Optional tools
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.secrets)
 }
@@ -26,9 +29,8 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystorePath =
-                System.getenv("KEYSTORE_PATH")
-                    ?: "${rootDir}/my-upload-key.jks"
+            val keystorePath = System.getenv("KEYSTORE_PATH")
+                ?: "${rootDir}/my-upload-key.jks"
 
             storeFile = file(keystorePath)
             storePassword = System.getenv("STORE_PASSWORD")
@@ -52,6 +54,7 @@ android {
 
         debug {
             // default debug config
+            isMinifyEnabled = false
         }
     }
 
@@ -76,6 +79,9 @@ android {
     }
 }
 
+/**
+ * Secrets plugin config (CI-safe)
+ */
 secrets {
     propertiesFileName = ".env"
     defaultPropertiesFileName = ".env.example"
