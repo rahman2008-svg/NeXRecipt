@@ -33,7 +33,7 @@ scripts:
     script: |
       echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-  - name: Grant Gradle Permission
+  - name: Grant Execute Permission
     script: |
       chmod +x gradlew
 
@@ -47,8 +47,3 @@ scripts:
 
 artifacts:
   - app/build/outputs/apk/debug/*.apk
-
-publishing:
-  email:
-    recipients:
-      - your-email@example.com
