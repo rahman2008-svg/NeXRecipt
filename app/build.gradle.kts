@@ -2,7 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+
+    // ✅ KSP must be AFTER kotlin plugins (important for CI stability)
     alias(libs.plugins.google.devtools.ksp)
+
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.secrets)
 }
@@ -57,7 +60,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    // ✅ FIXED FOR AGP 9 (NO kotlinOptions, NO sourceSets issue)
     kotlin {
         jvmToolchain(17)
     }
