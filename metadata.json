@@ -1,0 +1,6 @@
+{
+  "name": "NexReceipt Pro",
+  "description": "Offline Receipt & Invoice Generator with local Room Database storage, professional native PDF generation, sharing, statistics dashboard, and search features.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
