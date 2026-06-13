@@ -21,23 +21,32 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
+    # 🔥 FIX: ensure Gradle wrapper permission
     - name: Grant Execute Permission for Gradlew
       run: chmod +x gradlew
 
-    - name: Clean and Build Debug APK
-      run: ./gradlew clean assembleDebug
+    # 🔥 FIX: clean cache safe build (important for your errors)
+    - name: Clean Gradle Cache (force fresh build)
+      run: ./gradlew clean --no-daemon
+
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --stacktrace
 
     - name: Build Release Bundle
-      run: ./gradlew bundleRelease
+      run: ./gradlew bundleRelease --stacktrace
 
+    # 🔥 Upload Debug APK (safe path fix)
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
+      if: success()
       with:
         name: nexreceipt-pro-debug-apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: app/build/outputs/apk/debug/*.apk
 
+    # 🔥 Upload Release AAB
     - name: Upload Release AAB
       uses: actions/upload-artifact@v4
+      if: success()
       with:
         name: nexreceipt-pro-release-bundle
-        path: app/build/outputs/bundle/release/app-release.aab
+        path: app/build/outputs/bundle/release/*.aab
