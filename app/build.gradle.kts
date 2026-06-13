@@ -48,7 +48,7 @@ android {
         }
 
         debug {
-            // default debug
+            // default debug config
         }
     }
 
@@ -57,6 +57,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    // ✅ FIXED FOR AGP 9 (NO kotlinOptions, NO sourceSets issue)
     kotlin {
         jvmToolchain(17)
     }
