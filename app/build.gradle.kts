@@ -48,7 +48,7 @@ android {
         }
 
         debug {
-            // default debug config
+            // default debug
         }
     }
 
@@ -57,8 +57,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    // ✅ FIXED FOR AGP 9+
+    kotlin {
+        jvmToolchain(17)
     }
 
     buildFeatures {
@@ -69,14 +70,6 @@ android {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
-        }
-    }
-
-    // FIX: REMOVE kotlin.sourceSets problem (important for AGP 9+)
-    sourceSets {
-        getByName("debug") {
-            java.srcDir("build/generated/ksp/debug/kotlin")
-            java.srcDir("build/generated/ksp/debug/java")
         }
     }
 }
