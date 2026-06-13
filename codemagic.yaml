@@ -37,13 +37,9 @@ scripts:
     script: |
       chmod +x gradlew
 
-  - name: Clean Project
-    script: |
-      ./gradlew clean
-
   - name: Build Debug APK
     script: |
-      ./gradlew assembleDebug --stacktrace
+      ./gradlew clean assembleDebug --stacktrace
 
 artifacts:
   - app/build/outputs/apk/debug/*.apk
