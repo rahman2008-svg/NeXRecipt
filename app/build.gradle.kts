@@ -43,19 +43,16 @@ android {
         release {
             isCrunchPngs = false
             isMinifyEnabled = false
-
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
             signingConfig = signingConfigs.getByName("release")
         }
 
         debug {
-            // default debug config
             isMinifyEnabled = false
-            signingConfig = null  // ✅ Debug-এ signing বন্ধ রাখা হয়েছে
+            signingConfig = null
         }
     }
 
@@ -80,9 +77,6 @@ android {
     }
 }
 
-/**
- * Secrets plugin config (CI-safe)
- */
 secrets {
     propertiesFileName = ".env"
     defaultPropertiesFileName = ".env.example"
@@ -115,7 +109,7 @@ dependencies {
     // KotlinX Serialization
     implementation(libs.kotlinx.serialization.json)
 
-    // Room Database
+    // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
@@ -158,7 +152,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // Roborazzi (Screenshot Testing)
+    // Roborazzi
     testImplementation(libs.robolectric)
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
