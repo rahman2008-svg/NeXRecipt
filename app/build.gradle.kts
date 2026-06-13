@@ -27,15 +27,18 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val releaseKeystore = file(
+        System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
+    )
+
     signingConfigs {
         create("release") {
-            val keystorePath = System.getenv("KEYSTORE_PATH")
-                ?: "${rootDir}/my-upload-key.jks"
-
-            storeFile = file(keystorePath)
-            storePassword = System.getenv("STORE_PASSWORD")
-            keyAlias = "upload"
-            keyPassword = System.getenv("KEY_PASSWORD")
+            if (releaseKeystore.exists()) {
+                storeFile = releaseKeystore
+                storePassword = System.getenv("STORE_PASSWORD")
+                keyAlias = "upload"
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
         }
     }
 
@@ -47,7 +50,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            // Sign only when a keystore is available; otherwise build an
+            // unsigned bundle so CI can run without signing secrets.
+            signingConfig = if (releaseKeystore.exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                null
+            }
         }
 
         debug {

@@ -3,7 +3,7 @@ agp = "9.1.1"
 
 # Kotlin + KSP (CI-safe stable combo)
 kotlin = "2.1.21"
-ksp = "2.1.21-1.0.20"
+ksp = "2.1.21-2.0.2"
 
 composeBom = "2025.01.00"
 
