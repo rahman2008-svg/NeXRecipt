@@ -2,7 +2,7 @@
 
 agp = "9.1.1"
 
-# ✅ Stable combo for AGP 9
+# ✅ Stable Kotlin + KSP combo (AGP 9 compatible)
 kotlin = "2.1.21"
 googleDevtoolsKsp = "2.1.21-1.0.20"
 
